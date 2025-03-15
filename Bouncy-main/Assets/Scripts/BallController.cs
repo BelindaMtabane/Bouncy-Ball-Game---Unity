@@ -14,9 +14,20 @@ public class BallController : MonoBehaviour
     public Transform orientation;
 
     private Vector3 startLocation;
+    public Vector3 StartLocation { get { return startLocation; } set { startLocation = value; } }
+    public static BallController Instance;
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
         rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxAngularVelocity;
 
@@ -82,8 +93,6 @@ public class BallController : MonoBehaviour
         }
     }
 
-
-
     private void HandleJump()
     {
         if (isGrounded && Input.GetKeyDown(KeyCode.Space))
@@ -96,6 +105,10 @@ public class BallController : MonoBehaviour
     {
         return Physics.Raycast(transform.position, Vector3.down, 0.7f);
     }
-
+    //This method is used to change the checkpoint of the player
+    public void ChangeCheckPoint(Vector3 newLocation)
+    {
+        startLocation = newLocation;
+    }
 
 }
